@@ -2,6 +2,7 @@
 # MariaDB backup/restore helper
 # Copyright 2019, Development Gateway, GPL3+, see LICENSE
 
+from __future__ import print_function
 import logging, sys, os, argparse
 
 class Backup:
@@ -63,8 +64,13 @@ def main():
 
     ap = argparse.ArgumentParser(description = "Run MariaDB backups and upload to Glacier")
     ap.add_argument("--retention",
-            type = "int",
+            type = int,
+            nargs = 1,
+            required = True,
+            metavar = "DAYS",
             help = "Retention period in days")
+
+    args = ap.parse_args()
 
 if __name__ == "__main__":
     main()
