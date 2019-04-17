@@ -2,6 +2,8 @@
 # MariaDB backup/restore helper
 # Copyright 2019, Development Gateway, GPL3+, see LICENSE
 
+import logging, sys, os, argparse
+
 class Backup:
     def __init__(self, directory, parent = None):
         self._directory = directory
@@ -38,3 +40,31 @@ class Schedule:
 
     def createBackup(self):
         pass
+
+def get_logger():
+    valid_levels = ["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"]
+    try:
+        env_level = os.environ["LOG_LEVEL"]
+        valid_levels.remove(env_level)
+        level = getattr(logging, env_level)
+    except KeyError:
+        level = logging.WARNING
+    except ValueError:
+        msg = "Expected log level: %s, got: %s. Using default level WARNING." \
+                % ("|".join(valid_levels), env_level)
+        print(msg, file = sys.stderr)
+        level = logging.WARNING
+
+    logging.basicConfig(level = level)
+    return logging.getLogger(__name__)
+
+def main():
+    log = get_logger()
+
+    ap = argparse.ArgumentParser(description = "Run MariaDB backups and upload to Glacier")
+    ap.add_argument("--retention",
+            type = "int",
+            help = "Retention period in days")
+
+if __name__ == "__main__":
+    main()
