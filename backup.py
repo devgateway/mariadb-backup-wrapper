@@ -61,10 +61,7 @@ def get_logger():
     logging.basicConfig(level = level)
     return logging.getLogger(__name__)
 
-def main():
-    global log
-    log = get_logger()
-
+def parse_args():
     ap = argparse.ArgumentParser(description = "Run MariaDB backups and upload to Glacier")
     group = ap.add_mutually_exclusive_group(required = True)
     group.add_argument("--backup",
@@ -76,7 +73,12 @@ def main():
             action = "store_true",
             help = "Prepare and restore the latest backup")
 
-    args = ap.parse_args()
+    return ap.parse_args()
+
+def main():
+    global log
+    log = get_logger()
+    args = parse_args()
 
 if __name__ == "__main__":
     main()
