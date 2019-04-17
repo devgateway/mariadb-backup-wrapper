@@ -22,6 +22,14 @@ class Backup:
     def prepare(self):
         pass
 
+class FullBackup(Backup):
+    def run(self):
+        pass
+
+class IncrementalBackup(Backup):
+    def run(self):
+        pass
+
 class Schedule:
     def __init__(self, backup_dir, output_dir, retention_period):
         self._backup_dir = backup_dir
