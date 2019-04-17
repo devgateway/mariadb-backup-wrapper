@@ -75,10 +75,25 @@ def parse_args():
 
     return ap.parse_args()
 
+def get_paths():
+    paths = {
+        "TEMP_ROOT": "/var/tmp/mariadb-backup",
+        "OUTPUT_DIR": "/var/spool/backup"
+    }
+
+    for var_name in paths:
+        try:
+            paths[var_name] = os.environ[var_name]
+        except KeyError:
+            pass
+
+    return paths
+
 def main():
     global log
     log = get_logger()
     args = parse_args()
+    paths = get_paths()
 
 if __name__ == "__main__":
     main()
