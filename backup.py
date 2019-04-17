@@ -68,6 +68,7 @@ def parse_args():
             type = int,
             nargs = 1,
             metavar = "DAYS",
+            dest = "period",
             help = "Back up with full/incremental cycle of DAYS")
     group.add_argument("--restore",
             action = "store_true",
@@ -94,6 +95,11 @@ def main():
     log = get_logger()
     args = parse_args()
     paths = get_paths()
+
+    schedule = Schedule(
+        backup_dir = paths["TEMP_ROOT"],
+        output_dir = paths["OUTPUT_DIR"],
+        retention_period = args.period)
 
 if __name__ == "__main__":
     main()
