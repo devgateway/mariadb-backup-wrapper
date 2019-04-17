@@ -5,6 +5,8 @@
 from __future__ import print_function
 import logging, sys, os, argparse
 
+log = None
+
 class Backup:
     def __init__(self, directory, parent = None):
         self._directory = directory
@@ -60,15 +62,19 @@ def get_logger():
     return logging.getLogger(__name__)
 
 def main():
+    global log
     log = get_logger()
 
     ap = argparse.ArgumentParser(description = "Run MariaDB backups and upload to Glacier")
-    ap.add_argument("--retention",
+    group = ap.add_mutually_exclusive_group(required = True)
+    group.add_argument("--backup",
             type = int,
             nargs = 1,
-            required = True,
             metavar = "DAYS",
-            help = "Retention period in days")
+            help = "Back up with full/incremental cycle of DAYS")
+    group.add_argument("--restore",
+            action = "store_true",
+            help = "Prepare and restore the latest backup")
 
     args = ap.parse_args()
 
