@@ -65,14 +65,14 @@ def parse_args():
     ap = argparse.ArgumentParser(description = "Run MariaDB backups and upload to Glacier")
     group = ap.add_mutually_exclusive_group(required = True)
     group.add_argument("--backup",
-            type = int,
-            nargs = 1,
-            metavar = "DAYS",
-            dest = "period",
-            help = "Back up with full/incremental cycle of DAYS")
+        type = int,
+        nargs = 1,
+        metavar = "DAYS",
+        dest = "period",
+        help = "Back up with full/incremental cycle of DAYS")
     group.add_argument("--restore",
-            action = "store_true",
-            help = "Prepare and restore the latest backup")
+        action = "store_true",
+        help = "Prepare and restore the latest backup")
 
     return ap.parse_args()
 
